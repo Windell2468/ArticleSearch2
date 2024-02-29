@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 const val ARTICLE_EXTRA = "ARTICLE_EXTRA"
 private const val TAG = "ArticleAdapter"
 
-class ArticleAdapter(private val context: Context, private val articles: List<Article>) :
+class ArticleAdapter(private val context: Context, private val displayArticles: List<DisplayArticle>) :
     RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,11 +22,11 @@ class ArticleAdapter(private val context: Context, private val articles: List<Ar
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val article = articles[position]
-        holder.bind(article)
+        val displayArticle = displayArticles[position]
+        holder.bind(displayArticle)
     }
 
-    override fun getItemCount() = articles.size
+    override fun getItemCount() = displayArticles.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
@@ -39,18 +39,18 @@ class ArticleAdapter(private val context: Context, private val articles: List<Ar
             itemView.setOnClickListener(this)
         }
 
-        fun bind(article: Article) {
-            titleTextView.text = article.headline?.main
-            abstractTextView.text = article.abstract
+        fun bind(displayArticle: DisplayArticle) {
+            titleTextView.text = displayArticle.headline
+            abstractTextView.text = displayArticle.abstract
 
             Glide.with(context)
-                .load(article.mediaImageUrl)
+                .load(displayArticle.mediaImageUrl)
                 .into(mediaImageView)
         }
 
         override fun onClick(v: View?) {
             // Get selected article
-            val article = articles[absoluteAdapterPosition]
+            val article = displayArticles[absoluteAdapterPosition]
 
             // Navigate to Details screen and pass selected article
             val intent = Intent(context, DetailActivity::class.java)
